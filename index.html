@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FARO XXI Colombia · Iniciativas por ODSSI</title>
+<style>
+  :root{
+    --green-900:#0f5132;
+    --green-700:#1a7f5a;
+    --green-600:#2e9e74;
+    --green-500:#3fb787;
+    --green-100:#e7f4ee;
+    --green-050:#f1f9f5;
+    --ink:#1f2a2e;
+    --ink-soft:#475358;
+    --line:#d8e6df;
+    --bg:#eef6f1;
+    --white:#ffffff;
+    --radius:16px;
+    --shadow:0 6px 24px rgba(15,81,50,.08);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,var(--green-050),var(--bg));
+    color:var(--ink);
+    line-height:1.5;
+    min-height:100vh;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:28px 20px 80px}
+
+  /* Header */
+  header.hero{
+    background:var(--green-900);
+    color:#fff;
+    border-radius:var(--radius);
+    padding:26px 28px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"";position:absolute;top:0;right:0;
+    border-width:0 84px 84px 0;border-style:solid;
+    border-color:transparent var(--green-500) transparent transparent;
+    opacity:.9;
+  }
+  .badge{
+    display:inline-block;background:var(--green-600);color:#fff;
+    font-size:12px;font-weight:700;letter-spacing:.08em;
+    padding:6px 14px;border-radius:999px;text-transform:uppercase;
+  }
+  header.hero h1{margin:14px 0 6px;font-size:26px;line-height:1.2}
+  header.hero p{margin:0;color:#cfe9dd;font-size:15px;max-width:90%}
+
+  /* Cards */
+  .card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:24px 26px;
+    margin-top:20px;
+  }
+  .step-tag{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;font-weight:700;color:var(--green-700);
+    letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;
+  }
+  .step-tag .num{
+    background:var(--green-700);color:#fff;width:22px;height:22px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;font-size:12px;
+  }
+  h2.section{font-size:19px;margin:2px 0 4px;color:var(--green-900)}
+  .hint{font-size:13px;color:var(--ink-soft);margin:0 0 16px}
+
+  label{display:block;font-weight:600;font-size:14px;margin:18px 0 6px;color:var(--ink)}
+  label .opt{font-weight:500;color:var(--ink-soft);font-size:12px}
+  .q-help{font-size:12.5px;color:var(--ink-soft);margin:-2px 0 8px}
+
+  input[type=text],textarea,select{
+    width:100%;border:1px solid var(--line);border-radius:10px;
+    padding:11px 13px;font-size:14px;font-family:inherit;color:var(--ink);
+    background:var(--green-050);transition:border .15s,box-shadow .15s;
+  }
+  input[type=text]:focus,textarea:focus,select:focus{
+    outline:none;border-color:var(--green-500);
+    box-shadow:0 0 0 3px rgba(63,183,135,.18);background:#fff;
+  }
+  textarea{resize:vertical;min-height:96px}
+  select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%231a7f5a' stroke-width='2.5'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px}
+
+  .principio-pill{
+    display:none;margin-top:10px;font-size:12.5px;color:var(--green-700);
+    background:var(--green-100);border:1px solid #c8e6d7;border-radius:8px;
+    padding:8px 12px;
+  }
+  .principio-pill.show{display:block}
+
+  /* Actores chips */
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+  .chip{
+    position:relative;cursor:pointer;user-select:none;
+  }
+  .chip input{position:absolute;opacity:0;pointer-events:none}
+  .chip span{
+    display:inline-block;border:1.5px solid var(--green-600);color:var(--green-700);
+    background:#fff;border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:600;
+    transition:all .12s;
+  }
+  .chip input:checked + span{background:var(--green-600);color:#fff;border-color:var(--green-600)}
+  .chip:hover span{box-shadow:0 0 0 3px rgba(63,183,135,.15)}
+
+  /* repeatable acciones / kpis */
+  .repeat-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px}
+  .repeat-row textarea{min-height:auto;height:46px}
+  .btn-mini{
+    flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--ink-soft);
+    border-radius:9px;width:42px;height:46px;font-size:18px;cursor:pointer;line-height:1;
+  }
+  .btn-mini:hover{background:var(--green-050);color:var(--green-700);border-color:var(--green-500)}
+  .add-btn{
+    margin-top:4px;background:var(--green-050);border:1px dashed var(--green-500);
+    color:var(--green-700);border-radius:10px;padding:9px 14px;font-size:13.5px;
+    font-weight:600;cursor:pointer;
+  }
+  .add-btn:hover{background:var(--green-100)}
+
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+  .btn{
+    border:none;border-radius:12px;padding:14px 22px;font-size:15px;font-weight:700;
+    cursor:pointer;transition:transform .08s,box-shadow .15s;
+  }
+  .btn-primary{background:var(--green-700);color:#fff;box-shadow:var(--shadow)}
+  .btn-primary:hover{background:var(--green-900)}
+  .btn-secondary{background:#fff;color:var(--green-700);border:1.5px solid var(--green-600)}
+  .btn-secondary:hover{background:var(--green-050)}
+  .btn:active{transform:translateY(1px)}
+
+  .toast{
+    position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(120%);
+    background:var(--green-900);color:#fff;padding:14px 22px;border-radius:12px;
+    font-size:14px;box-shadow:var(--shadow);transition:transform .3s;z-index:50;max-width:90%;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0)}
+
+  footer{margin-top:30px;text-align:center;font-size:12px;color:var(--ink-soft)}
+  .req{color:#c0392b}
+  .err{border-color:#c0392b !important;background:#fdf0ef !important}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="badge">FARO XXI · Colombia 2026</span>
+    <h1>Diseño de iniciativas por ODSSI</h1>
+    <p>Cada grupo selecciona un ODSSI (Objetivo de Desarrollo del Sector Seguros e Insurtech) y propone acciones concretas, indicadores, actores clave y compromisos. La información alimenta una lámina por ODSSI.</p>
+  </header>
+
+  <!-- PASO 1: Selección ODSSI -->
+  <section class="card">
+    <div class="step-tag"><span class="num">1</span> Selecciona el ODSSI</div>
+    <h2 class="section">¿Sobre qué ODSSI van a trabajar?</h2>
+    <p class="hint">Pueden elegir cualquiera de los 16 ODSSI. Pueden registrar más de uno enviando el formulario varias veces.</p>
+
+    <label for="grupo">Nombre / número del grupo o mesa <span class="opt">(opcional)</span></label>
+    <input type="text" id="grupo" placeholder="Ej: Mesa 3" />
+
+    <label for="odssi">ODSSI <span class="req">*</span></label>
+    <select id="odssi">
+      <option value="">— Selecciona un ODSSI —</option>
+    </select>
+    <div id="principioPill" class="principio-pill"></div>
+  </section>
+
+  <!-- PASO 2: Contenido -->
+  <section class="card">
+    <div class="step-tag"><span class="num">2</span> Completa la lámina</div>
+    <h2 class="section">Información de la iniciativa</h2>
+    <p class="hint">Respondan en texto. Cada acción y cada indicador es una viñeta independiente en la slide.</p>
+
+    <!-- Acciones concretas -->
+    <label>¿Qué acciones concretas podemos proponer? <span class="req">*</span></label>
+    <p class="q-help">Acciones específicas y accionables para avanzar en este ODSSI.</p>
+    <div id="acciones"></div>
+    <button type="button" class="add-btn" data-add="acciones">+ Añadir acción</button>
+
+    <!-- KPIs -->
+    <label style="margin-top:24px">¿Cuáles son los indicadores clave para medir el progreso? <span class="req">*</span></label>
+    <p class="q-help">KPIs (Key Performance Indicators) — métricas medibles, idealmente con meta y horizonte.</p>
+    <div id="kpis"></div>
+    <button type="button" class="add-btn" data-add="kpis">+ Añadir indicador</button>
+
+    <!-- Actores clave -->
+    <label style="margin-top:24px">¿Cuáles son los actores clave? <span class="req">*</span></label>
+    <p class="q-help">Selecciona los actores relevantes. Puedes añadir otros.</p>
+    <div class="chips" id="actoresChips"></div>
+    <label for="actoresOtros" style="margin-top:12px;font-weight:500;font-size:13px">Otros actores <span class="opt">(separa con comas)</span></label>
+    <input type="text" id="actoresOtros" placeholder="Ej: Gremios, Academia, Gobierno local" />
+
+    <!-- Compromisos -->
+    <label style="margin-top:24px">Compromisos individuales respecto al ODSSI <span class="opt">(opcional)</span></label>
+    <p class="q-help">Quién se compromete a qué. Una línea por compromiso.</p>
+    <div id="compromisos"></div>
+    <button type="button" class="add-btn" data-add="compromisos">+ Añadir compromiso</button>
+  </section>
+
+  <div class="actions">
+    <button class="btn btn-primary" id="sendBtn">Enviar respuestas</button>
+    <button class="btn btn-secondary" id="downloadBtn">Descargar copia (JSON)</button>
+  </div>
+
+  <footer>
+    FARO XXI · Foro Asegurador Regional de Oportunidades para el Siglo XXI · Colombia 2026<br/>
+    Alianza Insurtech Panamericana · Asociación Insurtech Colombia · BCG
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== Catálogo canónico de ODSSI (versión Colombia, 16) ===== */
+const PRINCIPIOS = {
+  "Aumento de las protecciones": [1,2,3],
+  "Experiencia del cliente": [4,5,6],
+  "Desarrollo sostenible del sector asegurador": [7,8,9],
+  "Cadena de valor de primer nivel": [10,11,12],
+  "Prevención y gestión de riesgo": [13,14,15,16]
+};
+const ODSSI = [
+  {n:1,  nombre:"Accesibilidad y distribución ética",                          principio:"Aumento de las protecciones"},
+  {n:2,  nombre:"Vida, salud y bienestar",                                      principio:"Aumento de las protecciones"},
+  {n:3,  nombre:"Estabilidad económica de PyMEs y emprendedores",              principio:"Aumento de las protecciones"},
+  {n:4,  nombre:"Indemnización oportuna",                                       principio:"Experiencia del cliente"},
+  {n:5,  nombre:"Productos claros y éticos",                                    principio:"Experiencia del cliente"},
+  {n:6,  nombre:"Atención al cliente",                                          principio:"Experiencia del cliente"},
+  {n:7,  nombre:"Educación financiera para la asegurabilidad",                 principio:"Desarrollo sostenible del sector asegurador"},
+  {n:8,  nombre:"Distribución equitativa del valor",                           principio:"Desarrollo sostenible del sector asegurador"},
+  {n:9,  nombre:"Atraer talento seguro",                                        principio:"Desarrollo sostenible del sector asegurador"},
+  {n:10, nombre:"Prevención y detección de fraude",                            principio:"Cadena de valor de primer nivel"},
+  {n:11, nombre:"Operación end-to-end con IA y Agentic AI",                    principio:"Cadena de valor de primer nivel"},
+  {n:12, nombre:"Capacidad técnica para absorber riesgos",                     principio:"Cadena de valor de primer nivel"},
+  {n:13, nombre:"Movilidad responsable y riesgos cotidianos",                  principio:"Prevención y gestión de riesgo"},
+  {n:14, nombre:"Resiliencia climática, catástrofes naturales y ciberseguridad", principio:"Prevención y gestión de riesgo"},
+  {n:15, nombre:"Cultura de prevención e iniciativas colectivas",              principio:"Prevención y gestión de riesgo"},
+  {n:16, nombre:"Economía circular y reparación",                              principio:"Prevención y gestión de riesgo"}
+];
+const ACTORES_BASE = ["Aseguradora","Insurtechs","Reguladores","Fintechs","Bill. digitales","Retailers"];
+
+/* ===== Poblar select ===== */
+const sel = document.getElementById('odssi');
+ODSSI.forEach(o=>{
+  const opt=document.createElement('option');
+  opt.value=o.n;
+  opt.textContent=`ODSSI ${o.n} · ${o.nombre}`;
+  sel.appendChild(opt);
+});
+const pill=document.getElementById('principioPill');
+sel.addEventListener('change',()=>{
+  const o=ODSSI.find(x=>x.n==sel.value);
+  if(o){pill.textContent=`Principio: ${o.principio}`;pill.classList.add('show');}
+  else{pill.classList.remove('show');}
+});
+
+/* ===== Chips de actores ===== */
+const chipWrap=document.getElementById('actoresChips');
+ACTORES_BASE.forEach(a=>{
+  const l=document.createElement('label');l.className='chip';
+  l.innerHTML=`<input type="checkbox" value="${a}"><span>${a}</span>`;
+  chipWrap.appendChild(l);
+});
+
+/* ===== Filas repetibles ===== */
+function makeRow(container, placeholder, removable){
+  const row=document.createElement('div');row.className='repeat-row';
+  const ta=document.createElement('textarea');ta.placeholder=placeholder;ta.rows=1;
+  row.appendChild(ta);
+  const btn=document.createElement('button');btn.type='button';btn.className='btn-mini';btn.textContent='–';
+  btn.title='Quitar';
+  btn.addEventListener('click',()=>{if(container.children.length>1)row.remove();});
+  row.appendChild(btn);
+  container.appendChild(row);
+}
+const CONT={
+  acciones:{el:document.getElementById('acciones'),ph:"Ej: Implementar plataformas digitales para zonas de baja cobertura"},
+  kpis:{el:document.getElementById('kpis'),ph:"Ej: Aumentar la penetración general de seguros en 1% en 3 años"},
+  compromisos:{el:document.getElementById('compromisos'),ph:"Ej: [Participante 1] – Lidera la coordinación de actores y reportes de avance"}
+};
+Object.values(CONT).forEach(c=>{makeRow(c.el,c.ph);makeRow(c.el,c.ph);});
+document.querySelectorAll('.add-btn').forEach(b=>{
+  b.addEventListener('click',()=>{const k=b.dataset.add;makeRow(CONT[k].el,CONT[k].ph);});
+});
+
+/* ===== Recolectar ===== */
+function getList(container){
+  return [...container.querySelectorAll('textarea')].map(t=>t.value.trim()).filter(Boolean);
+}
+function collect(){
+  const o=ODSSI.find(x=>x.n==sel.value);
+  const actores=[...chipWrap.querySelectorAll('input:checked')].map(i=>i.value);
+  const otros=document.getElementById('actoresOtros').value.split(',').map(s=>s.trim()).filter(Boolean);
+  return {
+    foro:"FARO XXI - Colombia 2026",
+    grupo:document.getElementById('grupo').value.trim()||null,
+    odssi_n:o?o.n:null,
+    odssi_nombre:o?o.nombre:null,
+    principio:o?o.principio:null,
+    acciones_concretas:getList(CONT.acciones.el),
+    indicadores_kpis:getList(CONT.kpis.el),
+    actores_clave:[...actores,...otros],
+    compromisos_individuales:getList(CONT.compromisos.el),
+    timestamp:new Date().toISOString()
+  };
+}
+
+/* ===== Validación ===== */
+function validate(d){
+  let ok=true;
+  const mark=(elId,bad)=>{const e=document.getElementById(elId);e.classList.toggle('err',bad);};
+  mark('odssi',!d.odssi_n); if(!d.odssi_n)ok=false;
+  if(!d.acciones_concretas.length){ok=false;flashContainer(CONT.acciones.el);}
+  if(!d.indicadores_kpis.length){ok=false;flashContainer(CONT.kpis.el);}
+  if(!d.actores_clave.length){ok=false;chipWrap.style.outline='2px solid #c0392b';setTimeout(()=>chipWrap.style.outline='',1500);}
+  return ok;
+}
+function flashContainer(c){
+  const t=c.querySelector('textarea');if(t){t.classList.add('err');setTimeout(()=>t.classList.remove('err'),1800);}
+}
+
+/* ===== CONFIG: pega aquí la URL del Web App de Google Apps Script ===== */
+const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbxmB-6MLt57D4BF3UdH74BtoFEGxYtVYi54JHH-vrGafSAMZ6QzKjwAQloOVkgiPBwWSQ/exec";
+
+/* ===== Toast ===== */
+const toast=document.getElementById('toast');
+function showToast(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),3600);}
+
+/* ===== Enviar a Google Sheet ===== */
+const sendBtn=document.getElementById('sendBtn');
+sendBtn.addEventListener('click',async()=>{
+  const d=collect();
+  if(!validate(d)){showToast('Completa los campos obligatorios (ODSSI, acciones, indicadores y actores).');return;}
+  if(ENDPOINT_URL.startsWith('PEGA_AQUI')){showToast('Falta configurar la URL del Apps Script en el código.');return;}
+  const original=sendBtn.textContent;
+  sendBtn.disabled=true;sendBtn.textContent='Enviando…';
+  try{
+    // mode:'no-cors' evita problemas de CORS con Apps Script; no podemos leer la respuesta, asumimos éxito.
+    await fetch(ENDPOINT_URL,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(d)
+    });
+    showToast('¡Respuestas enviadas! Gracias. Puedes registrar otro ODSSI si lo deseas.');
+    sendBtn.textContent='✓ Enviado';
+    setTimeout(()=>{sendBtn.disabled=false;sendBtn.textContent=original;},2500);
+  }catch(e){
+    showToast('No se pudo enviar. Verifica tu conexión e inténtalo de nuevo.');
+    sendBtn.disabled=false;sendBtn.textContent=original;
+  }
+});
+
+/* ===== Descargar copia JSON (respaldo) ===== */
+document.getElementById('downloadBtn').addEventListener('click',()=>{
+  const d=collect();
+  if(!validate(d)){showToast('Completa los campos obligatorios antes de descargar.');return;}
+  const safe=(d.odssi_nombre||'odssi').toLowerCase().replace(/[^a-z0-9]+/g,'_').slice(0,40);
+  const fname=`faro_odssi_${d.odssi_n}_${safe}.json`;
+  const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fname;a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('Copia descargada.');
+});
+</script>
+</body>
+</html>
